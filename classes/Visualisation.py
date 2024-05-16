@@ -9,8 +9,11 @@ WHITE =         (255,   255,    255)
 GREEN =         (0,     255,    0)
 NAVY_BLUE =     (0,     0,      128)
 MINT_CREAM =    (245,   255,    250)
-DARK_BLUE = (0, 0, 139)
-PURPLE = (128, 0, 128)
+DARK_BLUE =     (0,     0,      139)
+PURPLE =        (128,   0,      128)
+RED =           (255,   0,      0)
+LIGHT_RED =     (155,   0,      0)
+
 
 WALL_COLOR = MINT_CREAM
 PATH_COLOR = DARK_BLUE
@@ -19,8 +22,8 @@ PATH_COLOR = DARK_BLUE
 
 GAME_NAME = 'Fight'
 FPS = 60
-SCREEN_WIDTH = 900
-SCREEN_HEIGHT = 900
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 800
 
 
 # --- Setup display -----------------------------------------------------------
@@ -34,9 +37,10 @@ clock = pygame.time.Clock()
 
 class Visualistation:
 
-    def __init__(self, maze):
+    def __init__(self, maze, players=[]):
         self.running = True
         self.maze = maze
+        self.players = players
 
         self.cell_width = int(SCREEN_WIDTH / self.maze.width)
         self.cell_height = int(SCREEN_HEIGHT / self.maze.height)
@@ -80,6 +84,23 @@ class Visualistation:
                 self.cell_width, self.cell_height)
         pygame.draw.rect(game_display, GREEN, rect)
 
+    def draw_traveled(self):
+        if self.players:
+            for player in self.players:
+                for (row, col) in player.ai.traveled:
+                    rect = (col * self.cell_width, 
+                            row * self.cell_height,
+                            self.cell_width, self.cell_height)
+                    pygame.draw.rect(game_display, LIGHT_RED, rect)
+
+    def draw_player(self):
+        if self.players:
+            for player in self.players:
+                rect = (player.col * self.cell_width, 
+                    player.row * self.cell_height,
+                    self.cell_width, self.cell_height)
+                pygame.draw.rect(game_display, RED, rect)
+
     def update_display(self):
             
             # Draw background.
@@ -87,6 +108,8 @@ class Visualistation:
         
             # Draw assets.
             # self.draw_current_cell()
+            # self.draw_traveled()
+            self.draw_player()
             self.draw_cells()
 
             # Update

@@ -16,20 +16,20 @@ class Maze:
         stack = [self.curr_cell]
         
         while True:
-            # time.sleep(0.00001)
+            # time.sleep(0.00000001)
             self.curr_cell.visited = True
             unvisited_neigbors = self._get_unvisited_neigbors(self.curr_cell)
             
             if unvisited_neigbors:
                 stack.append(self.curr_cell)
                 next_cell = random.choice(unvisited_neigbors)
+                # next_cell = unvisited_neigbors[0]
                 self._remove_wall(self.curr_cell, next_cell)
                 self.curr_cell = next_cell
             else:
                 if not stack:
                     break
                 self.curr_cell = stack.pop()
-
 
     def _get_unvisited_neigbors(self, cell : Cell) -> list:
 
